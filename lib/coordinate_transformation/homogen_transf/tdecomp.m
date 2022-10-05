@@ -3,8 +3,8 @@ function [ROTATION,TRANSLATION] = tdecomp(T)
 %[ROTATION,TRANSLATION] = TFORM(T)
 % Brief: Decompose an Homogenous Matrix
 % Details:
-% Return Rotation Matrix and Translation Matrix from an 
-% homegenous transformation matrix
+%   Return Rotation Matrix and Translation Matrix from an 
+%   homegenous transformation matrix
 % 
 % Syntax:  
 %     [ROTATION,TRANSLATION] = tdecomp(T)

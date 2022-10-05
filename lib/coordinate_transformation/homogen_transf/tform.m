@@ -1,20 +1,21 @@
-function [T] = tform(rotation,translation)
+function [T] = tform(R,t)
 % Brief: Createe an Homogenous Matrix
 % Details:
-%    None
+%    Create an Homogenous Matrix using the rotation matrix R and the
+%    translation vector t
 % 
 % Syntax:  
 %     [T] = tform(rotation,translation)
 % 
 % Inputs:
-%    rotation - (3,3,:), Rotation Matrix
-%    translation - (3,1,:) or (1,3,:) Elements, Translation Vector
+%    R - (3,3,:), Rotation Matrix
+%    t - (3,1,:) or (1,3,:) Elements, Translation Vector
 % 
 % Outputs:
 %    T - (3,3,:) , Homogenous Matrix
 % 
 % See also: tdecomp
-%
+
 % Author:                          Michele Di Lecce
 % Email:                           elmdl@leeds.ac.uk, michele.dilecce@hotmail.com
 % Created:                         06-Oct-2022 00:03:25
@@ -25,15 +26,15 @@ function [T] = tform(rotation,translation)
 %
 
 arguments
-    rotation (3,3,:) {mustBeA(rotation,["numeric","sym"])} = eye(3)
-    translation {mustBeA(translation,["numeric","sym"])} = ones(3,1)
+    R (3,3,:) {mustBeA(R,["numeric","sym"])} = eye(3)
+    t {mustBeA(t,["numeric","sym"])} = ones(3,1)
 end
     
-    if size(translation,1)>1
-        T = cat(2,rotation,translation);
+    if size(t,1)>1
+        T = cat(2,R,t);
         T = cat(1,T,repmat([0 0 0 1],1,1,size(T,3)));
     else
-        T = cat(1,rotation,translation);
+        T = cat(1,R,t);
         T = cat(2,T,repmat([0 0 0 1]',1,1,size(T,3)));
     end
     
