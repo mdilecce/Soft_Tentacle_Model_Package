@@ -27,9 +27,9 @@ function [R] = rotZYXd(theta,phi,gamma)
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
     arguments
-        theta {mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = syms('theta')
-        phi {mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = syms('phi')
-        gamma {mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = syms('gamma')
+        theta {mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = syms('theta','real')
+        phi {mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = syms('phi','real')
+        gamma {mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = syms('gamma','real')
     end
 
     R = rotzd(theta)*rotyd(phi)*rotxzzd(gamma);

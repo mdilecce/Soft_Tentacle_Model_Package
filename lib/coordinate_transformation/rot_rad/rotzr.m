@@ -25,7 +25,7 @@ function [R] = rotzr(theta)
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
 arguments
-    theta{mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = sym('theta')
+    theta{mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = sym('theta','real')
 end
 
     R = [   cos(theta)  -sin(theta)  0;

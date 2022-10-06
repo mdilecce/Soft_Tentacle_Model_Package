@@ -25,7 +25,7 @@ function [R] = rotyd(phi)
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
 arguments
-    phi{mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = sym('phi')
+    phi{mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = sym('phi','real')
 end
 
     R = [   cosd(phi)   0   sind(phi);

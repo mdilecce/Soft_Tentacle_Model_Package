@@ -25,7 +25,7 @@ function [R] = rotxr(gamma)
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
 arguments
-    gamma{mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = sym('gamma')
+    gamma{mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = sym('gamma','real')
 end
 
     R = [   1       0           0;
