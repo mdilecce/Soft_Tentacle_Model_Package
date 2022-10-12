@@ -1,4 +1,4 @@
-classdef softLinkAbstract < softtentacle.softTentacleHandle
+classdef softLink < softtentacle.softTentacleHandle
     %softLinkAbstract - One line description of what the class performs (H1 line)
     %   Optional file header info (to give more details about the function than in the H1 line)
     %
@@ -32,32 +32,22 @@ classdef softLinkAbstract < softtentacle.softTentacleHandle
 
     properties (SetAccess=immutable)
         Name (1,1) {mustBeTextScalar} = ''
-        Diameter (1,1) {mustBeReal,mustBePositive,mustBeScalar}
-        Length (1,1) {mustBeReal,mustBePositive,mustBeScalar,mustBeReal,mustBePositive,mustBeScalar}
+        Length (1,1) {mustBeReal,mustBePositive,mustBeScalar}
+        Diameter (1,1) {mustBeReal,mustBePositive,mustBeScalar}    
+        Q0 (4,1) {mustBeReal} = eye(4)
+
         Mass (1,1) {mustBeReal,mustBePositive,mustBeScalar}
         Inertia (3,3) {mustBeReal}
-        Q0 (4,1) {mustBeReal}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+        DistalLink 
     end
 
+    methods 
+        function obj = softLink(name,length,diameter,varigin                )
+    end
 
-
-    methods (Abstract)
-        
+    methods (Abstract,Access=protected)
+        evaluateInertia()
+        evaluateMass()
     end
 end
