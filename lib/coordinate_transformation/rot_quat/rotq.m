@@ -26,7 +26,11 @@ function [R] = rotq(q)
 
 
     arguments 
-        q (4,1) {mustBeA(q,["numeric","sym"])} = sym('q',[3,1],'real')
+        q (4,1) {mustBeA(q,["numeric","sym"])} = sym('q',[4,1],'real')
+    end
+
+    if isrow(q)
+        q = transpose(q);
     end
 
     R = (q(1)^2-transpose(q(2:end))*q(2:end))*eye(3) + 2*q(1)*skew(q(2:end))+2*q(2:end)*transpose(q(2:end));
