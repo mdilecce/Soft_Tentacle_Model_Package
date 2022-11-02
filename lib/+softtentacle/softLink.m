@@ -32,12 +32,12 @@ classdef softLink < softtentacle.softTentacleHandle
 
     properties (SetAccess=immutable)
         Name (1,1) {mustBeTextScalar} = "Soft Link"
-        Length (1,1) {mustBeReal,mustBePositive} = 1
-        Diameter (1,1) {mustBeReal,mustBePositive} = 1   
+        Length (1,1) {mustBeReal,mustBePositive} = 0
+        Diameter (1,1) {mustBeReal,mustBePositive} = 0  
         R0 (3,3) {mustBeReal} = eye(3)
 
-        Mass (1,1) {mustBeReal,mustBePositive} = 1
-        Inertia (3,3) {mustBeReal} = 1
+        Mass (1,1) {mustBeReal,mustBePositive} = 0
+        Inertia {mustBeReal} = 0
 
         DistalLink = nan;
         ProximalLink = nan;
@@ -54,17 +54,17 @@ classdef softLink < softtentacle.softTentacleHandle
             isnumericpos = @(x) isnumeric(x)&&isscalar(x)&&x>=0;
             
             addRequired(p,'name',isstringorchar);
-            addRequired(p,'length',isnumericpos);
-            addRequired(p,'diameter',isnumericpos);
-            addOptional(p,'initOrient',eye(3)...
+            addOptional(p,'length',0,isnumericpos);
+            addOptional(p,'diameter',0,isnumericpos);
+            addParameter(p,'initOrient',eye(3),...
                 @(x) isnumeric(x)&&...
                 (numel(x)==3||numel(x)==4)&&isvector(x)||...
                 isequal(size(x),[3,3]));
-            addOptional(p,'EulerOrder','XZX',...
+            addParameter(p,'EulerOrder','XZX',...
                 @(x) isstringorchar(x)&&numel(char(x))==3&&...
                 matches(lower(x),["xzx","rpy"]));
-            addOptional(p,'ProximalLink',nan,@(x)isnan(x)||isa(x,softLink);
-            addOptional(p,'DistalLink',nan,@(x)isnan(x)||isa(x,softLink);
+            addParameter(p,'ProximalLink',nan,@(x)isnan(x)||isa(x,softLink);
+            addParameter(p,'DistalLink',nan,@(x)isnan(x)||isa(x,softLink);
 
 
             p.KeepUnmatched = true;
@@ -107,4 +107,5 @@ classdef softLink < softtentacle.softTentacleHandle
 %         evaluateInertia()
 %         evaluateMass()
 %     end
+
 end
