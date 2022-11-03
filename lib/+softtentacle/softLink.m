@@ -31,10 +31,10 @@ classdef softLink < softtentacle.softTentacleHandle
     %   All rights reserved.  
 
     properties (SetAccess=immutable)
-        Name (1,1) {mustBeTextScalar} = "Soft Link"
+        Name (1,1) {mustBeTextScalar} = "SoftLink"
         Length (1,1) {mustBeReal,mustBePositive} = 0
         Diameter (1,1) {mustBeReal,mustBePositive} = 0  
-        R0 (3,3) {mustBeReal} = eye(3)
+        R0 (3,3) {mustBeRealRotMatrix} = eye(3)
 
         Mass (1,1) {mustBeReal,mustBePositive} = 0
         Inertia {mustBeReal} = 0
@@ -107,5 +107,7 @@ classdef softLink < softtentacle.softTentacleHandle
 %         evaluateInertia()
 %         evaluateMass()
 %     end
+
+    methods()
 
 end
