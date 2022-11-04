@@ -1,4 +1,4 @@
-function mustBeRotationMatrix(R)
+function mustBeQuaternion(q)
 %UNTITLED2 - One line description of what the function or script performs (H1 line)
 %   Optional file header info (to give more details about the function than in the H1 line)
 %
@@ -26,16 +26,29 @@ function mustBeRotationMatrix(R)
 
 %   Author: Michele Di Lecce
 %   email: elmdl@leeds.ac.uk, michele.dilecce@hotmail.com
-%   Date: 03-Nov-2022; Last revision: 03-Nov-2022
+%   Date: 04-Nov-2022; Last revision: 04-Nov-2022
 %
 %   % Implementation In Matlab R2022b
 %   Copyright (c) 2022, Michele Di Lecce, Storm Lab UK, University of Leeds
-%   All rights reserved. 
+%   All rights reserved.
 
-    % Test for Orthonormal
-    if ~isequal(R*transpose(R),eye(3))
-        eid = 'RotationMatrix:notOrthonormal';
-        msg = 'The rotation matrix is not Orthonormal or 3x3 Matrix';
+    if ~isequal(size(q),[4,1])
+        eid = 'quaternion:notSize';
+        msg = 'The quaternion is not a vector 4x1';
+        throwAsCaller(MException(eid,msg))
+    end
+
+    %Test Size
+    if ~(isa(q,'numeric')||isa(q,'sym'))
+        eid = 'Quaternion:notNumericOrSym';
+        msg = 'The quaternion is not numeric or symbolic';
+        throwAsCaller(MException(eid,msg))
+    end
+
+    %Text Norm Condition
+    if vecnorm(q)~=1
+        eid = 'Quaternion:normNotUnitary';
+        msg = 'The norm of the quaternion is not unitary |q|=1';
         throwAsCaller(MException(eid,msg))
     end
 

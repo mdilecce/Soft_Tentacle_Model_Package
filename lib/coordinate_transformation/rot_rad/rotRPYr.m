@@ -1,22 +1,22 @@
-function [R] = rotZYXr(theta,phi,gamma)
-% Brief: Rotation ZYX Tait-Bayan in radiant
+function [R] = rotRPYr(theta,phi,gamma)
+% Brief: Rotation RPY Tait-Bayan in radiant
 % Details:
 %    Rotation Composition of roll-pitch-yaw where theta, phi and gamma are
 %    in radiant
 % 
 % Syntax:  
-%     [R] = rotZYXr(theta,phi,gamma)
+%     [R] = rotRPYr(theta,phi,gamma)
 % 
 % Inputs:
 %    theta - scalar, numeric or sym, angle rotation z in radiant
 %    phi - scalar, numeric or sym, angle rotation y in radiant
-%    gamma - scalar, numeric or sym, angle rotation z in radiant
+%    gamma - scalar, numeric or sym, angle rotation x in radiant
 % 
 % Outputs:
 %    R - 3,3], numeric/sym, Rotation Matrix
 % 
 % 
-% See also: rotZYZr, rotZYXd
+% See also: rotZYZr, rotRPYd
 
 % Author:                          Michele Di Lecce
 % Email:                           elmdl@leeds.ac.uk, michele.dilecce@hotmail.com
@@ -26,12 +26,7 @@ function [R] = rotZYXr(theta,phi,gamma)
 % Implementation In Matlab R2022b
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
-    arguments
-        theta {mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = syms('theta','real')
-        phi {mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = syms('phi','real')
-        gamma {mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = syms('gamma','real')
-    end
 
-    R = rotzr(theta)*rotyr(phi)*rotxzzr(gamma);
+    R = rotzr(theta)*rotyr(phi)*rotxr(gamma);
     
 end

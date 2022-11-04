@@ -1,7 +1,7 @@
-function [R] = rotZYZd(theta,phi,gamma)
-% Brief: Rotation ZYZ in degrees
+function [R] = rotZXZd(theta,phi,gamma)
+% Brief: Rotation ZXZ in degrees
 % Details:
-%    Rotation Composition of rotz(theta)*roty(phi)*rotz(gamma) where theta
+%    Rotation Composition of rotz(theta)*rotx(phi)*rotz(gamma) where theta
 %    phi and gamma are angle in degrees
 % 
 % Syntax:  
@@ -9,14 +9,14 @@ function [R] = rotZYZd(theta,phi,gamma)
 % 
 % Inputs:
 %    theta - scalar, numeric or sym, angle rotation z in degrees
-%    phi - scalar, numeric or sym, angle rotation y in degrees
+%    phi - scalar, numeric or sym, angle rotation x in degrees
 %    gamma - scalar, numeric or sym, angle rotation z in degrees
 % 
 % Outputs:
 %    R - 3,3], numeric/sym, Rotation Matrix
 % 
 % 
-% See also: rotZYZr, rotZYXd
+% See also: rotZXZr, rotZYXd
 
 % Author:                          Michele Di Lecce
 % Email:                           elmdl@leeds.ac.uk, michele.dilecce@hotmail.com
@@ -26,13 +26,8 @@ function [R] = rotZYZd(theta,phi,gamma)
 % Implementation In Matlab R2022b
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
-    arguments
-        theta {mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = syms('theta','real')
-        phi {mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = syms('phi','real')
-        gamma {mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = syms('gamma','real')
-    end
 
-    R = rotzd(theta)*rotyd(phi)*rotzd(gamma);
+    R = rotzd(theta)*rotxd(phi)*rotzd(gamma);
     
 end
 

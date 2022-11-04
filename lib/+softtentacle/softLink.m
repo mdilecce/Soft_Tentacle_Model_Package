@@ -32,12 +32,12 @@ classdef softLink < softtentacle.softTentacleHandle
 
     properties (SetAccess=immutable)
         Name (1,1) {mustBeTextScalar}
-        Length (1,1) {mustBeReal,mustBePositive}
+        Length (1,1) {mustBeReal,mustBePositive} 
         Diameter (1,1) {mustBeReal,mustBePositive}  
         R0 (3,3) {mustBeRotationMatrix} = eye(3)
 
-        Mass (1,1) {mustBeReal,mustBePositive}
-        Inertia {mustBeReal}
+        Mass (1,1) {mustBeReal,mustBePositive} = 0
+        Inertia {mustBeReal} = 0
 
         DistalLink {mustBeScalarOrEmpty,mustBeSoftLink} = [];
         ProximalLink {mustBeScalarOrEmpty,mustBeSoftLink} = [];
@@ -45,76 +45,40 @@ classdef softLink < softtentacle.softTentacleHandle
 
     methods 
 
-        function obj = softLink(name,length,diameter,initOrientation)
+        function obj = softLink(name,length,diameter,...
+                initOrient,neighboorLink)
 
             arguments
-                name (1,1) {mustBeTextScalar}
-                length (1,1) {mustBeReal,mustBePositive} = 1 
-                diameter (1,1) {mustBeReal,mustBePositive} = 1
-                initOrientation.R0 (3,3) {mustBeRotationMatrix}
-                initOrientaiton.Theta0 (3,1) {mustBeReal}
+                name {mustBeTextScalar}
+                length (1,1) {mustBeReal,mustBePositive} = 0
+                diameter (1,1) {mustBeReal,mustBePositive} = 0
+                initOrient.R0 (3,3) {mustBeRotationMatrix}
+                initOrient.Theta0 (3,1) {mustBeReal}
+                initOrient.EulerAngles {mustBeEulerOrder} = "RPY"
+                initOrient.Q0 (4,1) {mustBeReal,mustBeQuaternion}
+                neighboorLink.DistalLink {mustBeScalarOrEmpty,mustBeSoftLink} = [];
+                neighboorLink.ProximalLink {mustBeScalarOrEmpty,mustBeSoftLink} = [];
             end
 
-            
-            
-%             %Parse Input
-%             p = inputParser;
-% 
-%             isstringorchar = @(x) isstring(x)&&isscalar(x)||ischar(x);
-%             isnumericpos = @(x) isnumeric(x)&&isscalar(x)&&x>=0;
-%             
-%             addRequired(p,'name',isstringorchar);
-%             addOptional(p,'length',0,isnumericpos);
-%             addOptional(p,'diameter',0,isnumericpos);
-%             addParameter(p,'initOrient',eye(3),...
-%                 @(x) isnumeric(x)&&...
-%                 (numel(x)==3||numel(x)==4)&&isvector(x)||...
-%                 isequal(size(x),[3,3]));
-%             addParameter(p,'EulerOrder','XZX',...
-%                 @(x) isstringorchar(x)&&numel(char(x))==3&&...
-%                 matches(lower(x),["xzx","rpy"]));
-%             addParameter(p,'ProximalLink',nan,@(x)isnan(x)||isa(x,softLink);
-%             addParameter(p,'DistalLink',nan,@(x)isnan(x)||isa(x,softLink);
-% 
-% 
-%             p.KeepUnmatched = true;
-%             parse(p,name,length,diameter,varargin{:});
-% 
-%             obj.Name = p.Results.name;
-%             obj.Length = p.Results.length;
-%             obj.Diameter = p.Results.diameter;
-%             
-%             initOrder = p.Results.initOrient;
-% 
-%             switch size(initOrder)
-%                 case [3,3]
-%                     obj.R0 = initOrder;
-%                 case {[1,4],[4,1]}
-%                     if vecnorm(initOrder) == 1
-%                         obj.R0 = rotq(initOrder);
-%                     end
-%                 case {[1,3],[3,1]}
-%                    euler = lower(char(p.Results.EulerOrder));
-%                    switch euler
-%                        case "rpy"
-%                            obj.R0 = rotZYXd(initOrder);
-%                        otherwise
-%                            obj.R0 = rotZXZd(initOrder);
-%                    end
-%                 otherwise
-%                     obj.R0 = eye(3);
-%             end
-%             
-%             obj.ProximalLink = p.Results.ProximalLink;
-%             obj.DistalLink = p.Results.DistalLink;
+            obj.Name = name;
+            obj.Diameter = diameter;
+            obj.Length = length;
 
+            if isfield(initOrient,"R0")
+                obj.R0 = initOrient.R0;
+            elseif isfield(initOrient,"Q0")
+                obj.R0 = rotq(initOrient.Q0);
+            elseif isfield(initOrient,"Theta0")
+                obj.R0 = feval(strcat("rot",upper(initOrient),"d"),...
+                    initOrient.Theta0);
+            end
+
+            obj.DistalLink = neighboorLink.DistalLink;
+            obj.ProximalLink = neighboorLink.ProximalLink;
+            
         end
       
     end
-
-
-
-
 
 %     methods (Abstract,Access=protected)
 % 
@@ -123,6 +87,7 @@ classdef softLink < softtentacle.softTentacleHandle
 %     end
 
     methods (Static, Access=protected)
+
         %Validation Functions
         function mustBeSoftLink(link)
             % Test Soft Link Size
@@ -132,6 +97,7 @@ classdef softLink < softtentacle.softTentacleHandle
                 throwAsCaller(MException(eid,msg))
             end
         end
+        
     end
 
 end
