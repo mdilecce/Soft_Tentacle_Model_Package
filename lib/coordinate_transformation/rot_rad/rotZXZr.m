@@ -1,7 +1,7 @@
 function [R] = rotZYZr(theta,phi,gamma)
 % Brief: Rotation ZYZ in radiant
 % Details:
-%    Rotation Composition of rotz(theta)*roty(phi)*rotz(gamma) where theta
+%    Rotation Composition of rotz(theta)*rotx(phi)*rotz(gamma) where theta
 %    phi and gamma are angle in radiant
 % 
 % Syntax:  
@@ -9,7 +9,7 @@ function [R] = rotZYZr(theta,phi,gamma)
 % 
 % Inputs:
 %    theta - scalar, numeric or sym, angle rotation z in radiant
-%    phi - scalar, numeric or sym, angle rotation y in radiant
+%    phi - scalar, numeric or sym, angle rotation x in radiant
 %    gamma - scalar, numeric or sym, angle rotation z in radiant
 % 
 % Outputs:
@@ -26,13 +26,8 @@ function [R] = rotZYZr(theta,phi,gamma)
 % Implementation In Matlab R2022b
 % Copyright © 2022 Storm Lab UK, University of Leeds.All Rights Reserved.
 %
-    arguments
-        theta {mustBeScalarOrEmpty,mustBeA(theta,["numeric","sym"])} = syms('theta','real')
-        phi {mustBeScalarOrEmpty,mustBeA(phi,["numeric","sym"])} = syms('phi','real')
-        gamma {mustBeScalarOrEmpty,mustBeA(gamma,["numeric","sym"])} = syms('gamma','real')
-    end
 
-    R = rotzr(theta)*rotyr(phi)*rotzr(gamma);
+    R = rotzr(theta)*rotxr(phi)*rotzr(gamma);
     
 end
 
