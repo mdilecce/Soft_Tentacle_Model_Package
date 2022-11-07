@@ -29,8 +29,11 @@ classdef softLink < softtentacle.softTentacleHandle
     %   % Implementation In Matlab R2022b
     %   Copyright (c) 2022, Michele Di Lecce, Storm Lab UK, University of Leeds
     %   All rights reserved.  
+    
+    %Specs Segment
 
     properties (SetAccess=immutable)
+
         Name (1,1) {mustBeTextScalar}
         Length (1,1) {mustBeReal,mustBePositive} 
         Diameter (1,1) {mustBeReal,mustBePositive}  
@@ -39,8 +42,20 @@ classdef softLink < softtentacle.softTentacleHandle
         Mass (1,1) {mustBeReal,mustBePositive} = 0
         Inertia {mustBeReal} = 0
 
+    properties (SetAccess={?softtentacle.softTentacleHandle})
+        %Neighboor Links
         DistalLink {mustBeScalarOrEmpty,mustBeSoftLink} = [];
         ProximalLink {mustBeScalarOrEmpty,mustBeSoftLink} = [];
+    end
+
+    %Current State
+    properties (Access={?softtentacle.softTentacleHandle})
+        
+        P (3,1) {mustBeReal}
+        Q (4,1) {mustBeReal,mustBeQuaternion}
+        f (3,1) {mustBeReal}
+        tau (3,1) {mustBeReal}
+        
     end
 
     methods 
