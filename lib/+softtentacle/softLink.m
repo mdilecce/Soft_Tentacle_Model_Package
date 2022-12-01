@@ -86,7 +86,7 @@ classdef softLink < softtentacle.softTentacleHandle
 %         evaluateMass()
 %     end
 
-    methods (Static, Access=protected)
+    methods (Static, Access={?softtentacle.softTentacleHandle})
 
         %Validation Functions
         function mustBeSoftLink(link)
