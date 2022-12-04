@@ -30,7 +30,7 @@ classdef softTentacle < softtentacle.softTentacleHandle
 
     properties (SetAccess = private)
          NumLinks {mustBeNumeric,mustBePositive} = 0
-         Links = []
+         Links {softtentacle.softLink.mustBeSoftLink}
          Base {mustBeA("softtenacle.softLink")} = softLink    
     end
     
