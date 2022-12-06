@@ -1,6 +1,6 @@
 function RodBVP
     %Parameters
-    E = 200e9;
+    E = 200e7;
     G = 80e9;
     r = 0.001;
     rho = 8000;
