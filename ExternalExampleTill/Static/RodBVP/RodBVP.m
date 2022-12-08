@@ -1,4 +1,4 @@
-function RodBVP
+efunction RodBVP
     %Parameters
     E = 200e7;
     G = 80e9;
