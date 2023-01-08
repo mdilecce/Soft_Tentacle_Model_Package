@@ -1,7 +1,7 @@
 classdef rodHandle<handle
     %rodModel
 
-    properties
+    properties 
 
         %Geometry Property
         r (1,1) {mustBeReal,mustBePositive} = 1e-3; %Radius [m]
@@ -29,14 +29,17 @@ classdef rodHandle<handle
         g = [9.81; 0; 0];
 
         %Boundary Conditions
+        %Proximal
         p0 (3,1) {mustBeReal} = [0;0;0];
-        R0 (3,3) {mustBeReal} = eye(3);
+        h0 (4,1) {mustBeReal}= [1;0;0;0]
 
         %State
-        y = [] %= [p; h; n; m];
+        y = []; %= [p; h; n; m];
         s = []
+
     end
 
+    %General ODE
     methods (Access=public)
         
         function obj=rodHandle()
@@ -52,19 +55,23 @@ classdef rodHandle<handle
 
         end
 
-        function shooting
-
         function solveIVP(obj,n0,m0)
-            y0 = [obj.p0;reshape(obj.R0,9,1);n0;m0];
+            %y0 = [obj.p0;reshape(obj.R0,9,1);n0;m0];
+            y0 = [obj.p0;obj.h0;n0;m0];
             [obj.s,obj.y] = ode45(@obj.rodModelOde,[0,obj.L],y0);
         end
-    
+
         %ODE System
         function ys = rodModelOde(obj,~,y)
 
-            R = reshape(y(4:12),3,3);
-            n = y(13:15);
-            m = y(16:18);
+            %R = reshape(y(4:12),3,3);
+            %n = y(13:15);
+            %m = y(16:18);
+            
+            h = y(4:7);
+            R = Q2Rot(h);
+            n = y(8:10);
+            m = y(11:13);
     
             v = obj.Kse^-1*R.'*n + [0;0;1];
             u = obj.Kbt^-1*R.'*m;
@@ -73,19 +80,45 @@ classdef rodHandle<handle
             Rs = R*hat(u);
             ns = -obj.rho*obj.A*obj.g;
             ms = -hat(ps)*n;
+
+            hs = [ 0  , -u(1), -u(2), -u(3);
+                u(1),   0  ,  u(3), -u(2);
+                u(2), -u(3),   0  ,  u(1);
+                u(3),  u(2), -u(1),   0  ] * h/2;
     
-            ys = [ps; reshape(Rs,9,1); ns; ms];
+            %ys = [ps; reshape(Rs,9,1); ns; ms];
+            ys = [ps;hs;ns;ms];
 
-        end
-
-        function plotSimple(obj)
-             plot3(obj.y(:,1),obj.y(:,2),obj.y(:,3));  
-             title('Rod Current Solution');  
-             axis([-obj.L/2 obj.L/2 -obj.L/2 obj.L/2 -obj.L obj.L])
-             grid on;   daspect([1 1 1]);  
-             xlabel('x (m)');   ylabel('y (m)');  zlabel('z (m)');
         end
 
     end
+
+    methods (Access=?plotRod)
+        function [p,h,s,r]=returnStatusDef(obj)
+            p=obj.y(:,1:3);
+            h=obj.y(:,4:7);
+            s=obj.s;
+            r=obj.r;
+        end
+    end
+
+    methods (Access=public) 
+
+%         function l=plotRod(obj,argsLine)
+%             arguments
+%                 obj 
+%                 argsLine.?matlab.graphics.primitive.chart.Line;    
+%             end
+%             propertyCell = namedargs2cell(argsLine);
+%             plot3(obj.y(:,1),obj.y(:,2),obj.y(:,3),propertyCell{:});  
+%             title('Rod Current Solution');  
+%             axis([-obj.L/2 obj.L/2 -obj.L/2 obj.L/2 -obj.L obj.L])
+%             grid on;   daspect([1 1 1]);  
+%             xlabel('x (m)');   ylabel('y (m)');  zlabel('z (m)');
+%         end
+
+    end
+ 
+
 
 end
